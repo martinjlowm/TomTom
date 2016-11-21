@@ -1,7 +1,8 @@
-## Interface: 20300
+## Interface: 11200
 ## Title: TomTom
 ## Notes: Acts as your portable navigation assistant
 ## SavedVariables: TomTomDB
+## Dependencies: gxLuaPlus
 ## OptionalDeps: Dongle
 
 Dongle.lua
