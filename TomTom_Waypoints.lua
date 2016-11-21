@@ -41,6 +41,7 @@ local World_OnEnter,World_OnLeave,World_OnClick,World_OnEvent
 -- OnDistanceFar
 -- OnDistanceNear
 -- OnDistanceArrive
+
 function TomTom:SetWaypoint(c,z,x,y,far,near,arrive,callback)
     -- Try to acquire a waypoint from the frame pool
     local point = table.remove(pool)
@@ -85,6 +86,10 @@ function TomTom:SetWaypoint(c,z,x,y,far,near,arrive,callback)
         point.minimap:SetScript('OnClick', Minimap_OnClick)
         point.minimap:RegisterEvent('PLAYER_ENTERING_WORLD')
         point.minimap:SetScript('OnEvent', Minimap_OnEvent)
+
+        World_OnEnter = Minimap_OnEnter
+        World_OnLeave = Minimap_OnLeave
+        World_OnClick = Minimap_OnClick
 
         point.world:RegisterEvent('WORLD_MAP_UPDATE')
         point.world:SetScript('OnEnter', World_OnEnter)
@@ -132,15 +137,14 @@ function TomTom:ClearWaypoint(point)
 end
 
 do
-    local tooltip_icon,tooltip_callback
+    local tooltip_icon, tooltip_callback
 
-    function Minimap_OnEnter(self, motion)
-        tooltip_icon = self
-        tooltip_callback = self.data.callback
-
+    function Minimap_OnEnter(...)
+        tooltip_icon = this
+        tooltip_callback = this.data.callback
         if tooltip_callback then
-            local dist,x,y = Astrolabe:GetDistanceToIcon(self)
-            tooltip:SetOwner(self, 'ANCHOR_CURSOR')
+            local dist,x,y = Astrolabe:GetDistanceToIcon(this.data.minimap)
+            tooltip:SetOwner(this, 'ANCHOR_CURSOR')
 
             -- Callback: OnTooltipShown
             -- arg1: The tooltip object
@@ -151,8 +155,8 @@ do
         end
     end
 
-    function Minimap_OnLeave(self, motion)
-        tooltip_icon,tooltip_callback = nil,nil
+    function Minimap_OnLeave(...)
+        tooltip_icon, tooltip_callback = nil, nil
         tooltip:Hide()
     end
 
@@ -222,7 +226,7 @@ do
 
         if callback then
             -- Handle the logic/callbacks for arrival
-            local near,far,arrive = data.near,data.far,data.arrive
+            local near, far, arrive = data.near, data.far, data.arrive
             local state = data.state
 
             if not state then
@@ -267,15 +271,15 @@ do
     function Tooltip_OnUpdate(...)
         local elapsed = arg1
         tooltip_count = tooltip_count + elapsed
-        if count >= 0.2 then
+        if tooltip_count >= 0.2 then
             if tooltip_callback then
-                local dist, x, y = Astrolabe:GetDistanceToIcon(tooltip_icon)
+                local dist, x, y = Astrolabe:GetDistanceToIcon(tooltip_icon.data.minimap)
 
                 -- Callback: OnTooltipShown
                 -- arg1: The tooltip object
                 -- arg2: The distance to the icon in yards
                 -- arg3: Boolean value indicating the tooltip was just shown
-                tooltip_callback('OnTooltipShown', tooltip, dist, true)
+                tooltip_callback('OnTooltipShown', this, dist, true)
             end
         end
     end
@@ -284,7 +288,6 @@ do
     function World_OnEvent(...)
         if event == 'WORLD_MAP_UPDATE' then
             local data = this.data
-            Print(this)
             local x,y = Astrolabe:PlaceIconOnWorldMap(WorldMapDetailFrame, this,
                                                       data.c, data.z,
                                                       data.x/100, data.y/100)

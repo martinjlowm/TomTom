@@ -132,8 +132,17 @@ function WorldMapButton_OnClick(...)
 end
 
 local function WaypointCallback(event, data, dist, lastdist)
-    if event == "OnDistanceArrive" then
+    if event == 'OnDistanceArrive' then
         TomTom:ClearWaypoint(data)
+    elseif event == 'OnTooltipShown' then
+        local tooltip = data
+        if lastdist then
+            tooltip:SetText(L['TomTom waypoint'])
+            tooltip:AddLine(string.format(L['%s yards away'], math.floor(dist)), 1, 1 ,1)
+            tooltip:Show()
+        else
+            tooltip.lines[2]:SetFormattedText(L['%s yards away'], math.floor(dist), 1, 1, 1)
+        end
     end
 end
 
