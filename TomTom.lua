@@ -23,7 +23,7 @@ function TomTom:Initialize()
             lock = false,
             coords_worldmap = true,
             coords_cursor = true,
-            coords_block = true,
+            coords_block = false,
             clearzone = false,
             waypoints = {
             },
