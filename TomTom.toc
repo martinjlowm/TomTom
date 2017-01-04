@@ -2,10 +2,10 @@
 ## Title: TomTom
 ## Notes: Acts as your portable navigation assistant
 ## SavedVariables: TomTomDB
-## Dependencies: gxLuaPlus
 ## OptionalDeps: Dongle
 
 Dongle.lua
+libs\Sol\Sol.xml
 Astrolabe\Load.xml
 TomTom.lua
 TomTom_Waypoints.lua
