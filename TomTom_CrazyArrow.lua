@@ -103,7 +103,7 @@ local twopi = math.pi * 2
 local wayframe = CreateFrame('Frame', 'TomTomCrazyArrow', UIParent)
 wayframe:SetHeight(56)
 wayframe:SetWidth(42)
-wayframe:SetPoint('CENTER', 0, 0)
+wayframe:SetPoint('CENTER', 0, -180)
 wayframe:EnableMouse(true)
 wayframe:SetMovable(true)
 wayframe:Hide()
