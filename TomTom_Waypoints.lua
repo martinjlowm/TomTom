@@ -288,6 +288,7 @@ do
     function World_OnEvent(...)
         if event == 'WORLD_MAP_UPDATE' then
             local data = this.data
+            if not data.x then return end
             local x,y = Astrolabe:PlaceIconOnWorldMap(WorldMapDetailFrame, this,
                                                       data.c, data.z,
                                                       data.x/100, data.y/100)
