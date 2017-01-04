@@ -6,7 +6,7 @@
 
 Dongle.lua
 libs\Sol\Sol.xml
-Astrolabe\Load.xml
+libs\Astrolabe\Load.xml
 TomTom.lua
 TomTom_Waypoints.lua
 TomTom_Zones.lua
